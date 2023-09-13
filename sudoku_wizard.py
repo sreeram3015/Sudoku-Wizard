@@ -10,6 +10,25 @@ sudoku_grid = [
     [0, 0, 0, 0, 8, 0, 0, 7, 9]
 ]
 
+#function to solve the grid
+def solve_sudoku(s_grid):
+    loc = locate_empty_cell(s_grid)
+    if not loc:
+        return True
+    else:
+        row, column = loc
+
+    for num in range(1, 10):
+        if check_validity(s_grid, num, (row, column)):
+            s_grid[row][column] = num
+
+            if solve_sudoku(s_grid):
+                return True
+            
+            s_grid[row][column] = 0
+
+    return False
+
 #printing the grid for visual representation
 def print_sudoku_grid(s_grid):
     print("")
@@ -33,6 +52,8 @@ def locate_empty_cell(s_grid):
         for c in range(9):  #column
             return(r, c)
 
+    return None
+
 #function to check the validity
 def check_validity(s_grid, num, pos):
     #Check row
@@ -55,3 +76,5 @@ def check_validity(s_grid, num, pos):
                 return False
     
     return True
+
+solve_sudoku(sudoku_grid)
