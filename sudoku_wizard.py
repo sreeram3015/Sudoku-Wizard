@@ -13,18 +13,22 @@ sudoku_grid = [
 #printing the grid for visual representation
 def print_sudoku_grid(s_grid):
     print("")
-    for i in range(len(s_grid)):
-        if i%3 == 0 and i !=0:
+    for r in range(9):
+        if r%3 == 0 and r !=0:
             print("- - - - - - - - - - - - ")
         
-        for j in range(9):
-            if j%3 ==0 and j!=0:
+        for c in range(9):
+            if c%3 ==0 and c!=0:
                 print(" | ", end="")
 
-            if j==8:
-                print(s_grid[i][j])
+            if c==8:
+                print(s_grid[r][c])
             else:
-                print(str(s_grid[i][j]) + " ", end="")
+                print(str(s_grid[r][c]) + " ", end="")
     print("")
 
-print_sudoku_grid(sudoku_grid)
+#function to locate empty shells
+def locate_empty_cell(s_grid):
+    for r in range(9):      #row
+        for c in range(9):  #column
+            return(r, c)
