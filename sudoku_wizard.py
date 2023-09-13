@@ -12,31 +12,32 @@ sudoku_grid = [
 
 #function to solve the grid
 def solve_sudoku(s_grid):
-    loc = locate_empty_cell(s_grid)
-    if not loc:
+    empty_cells = locate_empty_cells(s_grid)
+    if not empty_cells:
         return True
-    else:
-        row, column = loc
 
-    for num in range(1, 10):
-        if check_validity(s_grid, num, (row, column)):
-            s_grid[row][column] = num
+    for row, column in empty_cells:
+        for num in range(1, 10):
+            if check_validity(s_grid, num, (row, column)):
+                s_grid[row][column] = num
 
-            if solve_sudoku(s_grid):
-                return True
+                if solve_sudoku(s_grid):
+                    return True
             
-            s_grid[row][column] = 0
+                s_grid[row][column] = 0
 
-    return False
+        return False
+    return True
+
 
 #printing the grid for visual representation
 def print_sudoku_grid(s_grid):
     print("")
-    for r in range(9):
+    for r in range(len(s_grid)):
         if r%3 == 0 and r !=0:
             print("- - - - - - - - - - - - ")
         
-        for c in range(9):
+        for c in range(len(s_grid[0])):
             if c%3 ==0 and c!=0:
                 print(" | ", end="")
 
@@ -47,22 +48,24 @@ def print_sudoku_grid(s_grid):
     print("")
 
 #function to locate empty shells
-def locate_empty_cell(s_grid):
-    for r in range(9):      #row
-        for c in range(9):  #column
-            return(r, c)
+def locate_empty_cells(s_grid):
+    empty_cells = []
+    for r in range(len(s_grid)):        #row
+        for c in range(len(s_grid[0])):  #column
+            if s_grid[r][c] == 0:
+                empty_cells.append((r,c))
+    return empty_cells
 
-    return None
 
 #function to check the validity
 def check_validity(s_grid, num, pos):
     #Check row
-    for r in range(9):
+    for r in range(len(s_grid[0])):
         if s_grid[pos[0]][r] == num and pos[1] != r:
             return False
 
     #Check column
-    for c in range(9):
+    for c in range(len(s_grid)):
         if s_grid[c][pos[1]] == num and pos[0] != c:
             return False
 
@@ -77,4 +80,9 @@ def check_validity(s_grid, num, pos):
     
     return True
 
+print("Question: ")
+print_sudoku_grid(sudoku_grid)
+print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ")
 solve_sudoku(sudoku_grid)
+print("Solution: ")
+print_sudoku_grid(sudoku_grid)
